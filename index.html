@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Console Window</title>
+  <style>
+    body {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      background-color: #f2f2f2;
+      font-family: Arial, sans-serif;
+    }
+
+    #console {
+      width: 400px;
+      height: 300px;
+      background-color: #111;
+      color: #fff;
+      font-family: Consolas, monospace;
+      padding: 10px;
+      border-radius: 5px;
+      margin-bottom: 20px;
+      overflow-y: scroll;
+    }
+
+    #nameInput {
+      width: 200px;
+      padding: 8px;
+      border-radius: 5px;
+      border: none;
+      margin-right: 10px;
+    }
+
+    #submitBtn {
+      padding: 8px 20px;
+      background-color: #007bff;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <textarea id="console" readonly></textarea>
+  <div>
+    <input type="text" id="nameInput" placeholder="Enter your name">
+    <button id="submitBtn">Submit</button>
+  </div>
+
+  <script>
+    const consoleElement = document.getElementById('console');
+    const nameInput = document.getElementById('nameInput');
+    const submitBtn = document.getElementById('submitBtn');
+
+    function printMessage(message) {
+      consoleElement.value += message + '\n';
+      consoleElement.scrollTop = consoleElement.scrollHeight;
+    }
+
+    class Game {
+      constructor() {
+        this.player = new Player();
+        printMessage("Hello, what is your name?");
+        submitBtn.addEventListener('click', this.onNameSubmit.bind(this));
+      }
+
+      clearConsole() {
+        consoleElement.value = '';
+      }
+
+      printMessage(message) {
+        printMessage(message);
+      }
+
+      onNameSubmit() {
+        const name = nameInput.value;
+        if (!/^[a-zA-Z]+$/.test(name)) {
+          this.clearConsole();
+          printMessage("Alphabetical characters only!");
+        } else if (name.length <= 2) {
+          this.clearConsole();
+          printMessage("There is a minimum character limit of 3!");
+        } else {
+          this.player.setName(name);
+          this.clearConsole();
+          printMessage("Welcome " + this.player.getName() + "!");
+        }
+      }
+    }
+
+    class Player {
+      constructor() {
+        this.name = '';
+      }
+
+      setName(name) {
+        this.name = name;
+      }
+
+      getName() {
+        return this.name;
+      }
+    }
+
+    const game = new Game();
+    game.clearConsole();
+  </script>
+</body>
+</html>
